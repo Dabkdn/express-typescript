@@ -2,6 +2,7 @@ import { STATUS_CODE } from "../../constant/common";
 import { MESSAGE } from "../../constant/message";
 import { IMessageResponse } from "../../type";
 import { IUserResponse } from "./user.type";
+import AboutModel from "../../model/about.model";
 
 const users = [
   { id: 1, name: "User1", email: "user1@gmail.com", age: 31 },
@@ -10,9 +11,17 @@ const users = [
 ];
 
 export default class UserService {
-  constructor() {}
+  private aboutModel: AboutModel;
+
+  constructor() {
+    this.aboutModel = new AboutModel();
+  }
   public get = (id: string): Promise<IUserResponse | IMessageResponse> => {
     return new Promise(async (resolve) => {
+      await this.aboutModel.create({
+        name: "test",
+        description: "nothing",
+      });
       const result = users.find((item) => item.id.toString() === id);
       if (!result) {
         return resolve({
